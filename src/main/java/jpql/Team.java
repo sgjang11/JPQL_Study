@@ -32,4 +32,13 @@ public class Team {
     public void setName(String name) {
         this.name = name;
     }
+
+    // 조인을 위해 Team에 Member의 get/set 생성
+    public List<Member> getMembers() {
+        return members;
+    }
+
+    public void setMembers(List<Member> members) {
+        this.members = members;
+    }
 }

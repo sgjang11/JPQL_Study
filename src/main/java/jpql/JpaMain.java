@@ -80,6 +80,7 @@ public class JpaMain {
 //            System.out.println("age = " + memberDTO.getAge());
 
             // 페이징
+/*
             for (int i = 0; i < 100; i++) {
                 Member member = new Member();
                 member.setUsername("member"+i);
@@ -98,6 +99,52 @@ public class JpaMain {
             for (Member member1 : resultList) {
                 System.out.println("member1 = " + member1);
             }
+*/
+            // 조인
+/*
+            Team team = new Team();
+            team.setName("teamA");
+            entityManager.persist(team);
+
+            Member member = new Member();
+            member.setUsername("teamA");
+            member.setAge(20);
+            entityManager.persist(member);
+
+            member.setTeam(team);
+
+            entityManager.flush();
+            entityManager.clear();
+*/
+/*
+            // inner
+            //List<Member> resultList = entityManager.createQuery("select m from Member m inner join m.team t", Member.class)
+            //        .getResultList();
+
+            //outer
+            //List<Member> resultList = entityManager.createQuery("select m from Member m left outer join m.team t", Member.class)
+            //        .getResultList();
+
+            //세타
+            //List<Member> resultList = entityManager.createQuery("select m from Member m, Team t where m.username = t.name")
+            //        .getResultList();
+
+            //String query = "select m from Member m left join m.team t on t.name = 'teamA'";
+            //List<Member> resultList = entityManager.createQuery(query, Member.class)
+            //        .getResultList();
+
+            //System.out.println("resultList = " + resultList.size());
+
+            //String query = "select m from Member m left join Team t on m.username = t.name";
+            //List<Member> resultList = entityManager.createQuery(query, Member.class)
+            //        .getResultList();
+
+            //System.out.println("resultList = " + resultList.size());
+*/
+
+            //서브 쿼리
+
+
 
             entityTransaction.commit();
         } catch (Exception e) {

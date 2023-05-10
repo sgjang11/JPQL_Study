@@ -10,7 +10,8 @@ public class Member {
     private String username;
     private int age;
 
-    @ManyToOne
+    // ManyToOne 무조건 LAZY로 변경
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "TEAM_ID")
     private Team team;
 
@@ -36,6 +37,22 @@ public class Member {
 
     public void setAge(int age) {
         this.age = age;
+    }
+
+    // 조인을 위해 Team get/set 생성
+
+    public Team getTeam() {
+        return team;
+    }
+
+    public void setTeam(Team team) {
+        this.team = team;
+    }
+
+    // 그리고 Team에 Member의 get/set 생성
+    public void changeTeam(Team team) {
+        this.team = team;
+        team.getMembers().add(this);
     }
 
     // 여기서 주의점 toString할때 양방향으로 되어있는 team도 포함하면 에러가 발생
