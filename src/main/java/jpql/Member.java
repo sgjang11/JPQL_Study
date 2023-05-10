@@ -37,4 +37,14 @@ public class Member {
     public void setAge(int age) {
         this.age = age;
     }
+
+    // 여기서 주의점 toString할때 양방향으로 되어있는 team도 포함하면 에러가 발생
+    @Override
+    public String toString() {
+        return "Member{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", age=" + age +
+                '}';
+    }
 }

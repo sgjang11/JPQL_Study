@@ -10,6 +10,7 @@ public class JpaMain {
         EntityTransaction entityTransaction = entityManager.getTransaction();
         entityTransaction.begin();
         try {
+/*
             Member member = new Member();
             member.setUsername("member1");
             entityManager.persist(member);
@@ -42,6 +43,61 @@ public class JpaMain {
                     .setParameter("username", "member1")
                     .getSingleResult();
             System.out.println("singleResult2 = " + singleResult2.getUsername());
+*/
+            // 프로젝션
+//            Member member = new Member();
+//            member.setUsername("member1");
+//            member.setAge(10);
+//            entityManager.persist(member);
+//
+//            entityManager.flush();
+//            entityManager.clear();
+
+//            List<Member> resultList = entityManager.createQuery("select m from Member m", Member.class)
+//                    .getResultList();
+//            Member findMember = resultList.get(0);
+//            findMember.setAge(30);
+            //1.
+//            List<Member> resultList = entityManager.createQuery("select m.username, m.age from Member m")
+//                    .getResultList();
+//            Object o = resultList.get(0);
+//            Object[] result = (Object[]) o;
+//            System.out.println("username = " + result[0]);
+//            System.out.println("age = " + result[1]);
+
+            //2.
+//            List<Object[]> resultList = entityManager.createQuery("select m.username, m.age from Member m")
+//                    .getResultList();
+//            Object[] result = resultList.get(0);
+//            System.out.println("username = " + result[0]);
+//            System.out.println("age = " + result[1]);
+
+            //3.
+//            List<MemberDTO> resultList = entityManager.createQuery("select new jpql.MemberDTO(m.username, m.age) from Member m", MemberDTO.class)
+//                    .getResultList();
+//            MemberDTO memberDTO = resultList.get(0);
+//            System.out.println("username = " + memberDTO.getUsername());
+//            System.out.println("age = " + memberDTO.getAge());
+
+            // 페이징
+            for (int i = 0; i < 100; i++) {
+                Member member = new Member();
+                member.setUsername("member"+i);
+                member.setAge(i);
+                entityManager.persist(member);
+            }
+
+            entityManager.flush();
+            entityManager.clear();
+            List<Member> resultList = entityManager.createQuery("select m from Member m order by m.age desc", Member.class)
+                    .setFirstResult(0)
+                    .setMaxResults(10)
+                    .getResultList();
+
+            System.out.println("resultList.size() = " + resultList.size());
+            for (Member member1 : resultList) {
+                System.out.println("member1 = " + member1);
+            }
 
             entityTransaction.commit();
         } catch (Exception e) {
