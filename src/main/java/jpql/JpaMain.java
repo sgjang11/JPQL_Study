@@ -142,9 +142,35 @@ public class JpaMain {
             //System.out.println("resultList = " + resultList.size());
 */
 
-            //서브 쿼리
+            Team team = new Team();
+            team.setName("teamA");
+            entityManager.persist(team);
 
+            Member member = new Member();
+            member.setUsername("teamA");
+            member.setAge(20);
+            member.setType(MemberType.ADMIN);
+            entityManager.persist(member);
 
+            member.setTeam(team);
+
+            entityManager.flush();
+            entityManager.clear();
+
+//            String query = "select m.username, 'HELLO', TRUE from Member m where m.type = jpql.MemberType.ADMIN";
+//            List<Object[]> resultList = entityManager.createQuery(query)
+//                    .getResultList();
+            // 또는
+            String query = "select m.username, 'HELLO', TRUE from Member m where m.type = :userType";
+            List<Object[]> resultList = entityManager.createQuery(query)
+                    .setParameter("userType", MemberType.ADMIN)
+                    .getResultList();
+
+            for (Object[] objects : resultList) {
+                System.out.println("objects = " + objects[0]);
+                System.out.println("objects = " + objects[1]);
+                System.out.println("objects = " + objects[2]);
+            }
 
             entityTransaction.commit();
         } catch (Exception e) {
