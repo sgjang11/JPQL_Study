@@ -142,6 +142,7 @@ public class JpaMain {
             //System.out.println("resultList = " + resultList.size());
 */
 
+/*
             Team team = new Team();
             team.setName("teamA");
             entityManager.persist(team);
@@ -156,12 +157,22 @@ public class JpaMain {
 
             entityManager.flush();
             entityManager.clear();
+*/
 
 //            String query = "select m.username, 'HELLO', TRUE from Member m where m.type = jpql.MemberType.ADMIN";
 //            List<Object[]> resultList = entityManager.createQuery(query)
 //                    .getResultList();
             // 또는
-            String query = "select m.username, 'HELLO', TRUE from Member m where m.type = :userType";
+            // String query = "select m.username, 'HELLO', TRUE from Member m where m.type = :userType";
+
+            // 이런 것도 가능
+            // String query = "select m.username, 'HELLO', TRUE from Member m"
+            //                 +" where m.username is not null";
+
+            // String query = "select m.username, 'HELLO', TRUE from Member m"
+            //                 +" where m.age between 0 and 10";
+
+/*
             List<Object[]> resultList = entityManager.createQuery(query)
                     .setParameter("userType", MemberType.ADMIN)
                     .getResultList();
@@ -170,6 +181,76 @@ public class JpaMain {
                 System.out.println("objects = " + objects[0]);
                 System.out.println("objects = " + objects[1]);
                 System.out.println("objects = " + objects[2]);
+            }
+*/
+/*
+            Team team = new Team();
+            team.setName("teamA");
+            entityManager.persist(team);
+
+            Member member = new Member();
+            //member.setUsername("teamA");
+            member.setUsername(null);
+            //member.setUsername("관리자");
+            member.setAge(20);
+            member.setType(MemberType.ADMIN);
+            entityManager.persist(member);
+
+            member.setTeam(team);
+
+            entityManager.flush();
+            entityManager.clear();
+*/
+
+/*
+            String query = "select " +
+                    "case when m.age <= 10 then '학생요금' " +
+                    " when m.age >= 60 then '경로요금' " +
+                    " else '일반요금' " +
+                    "end " +
+                    " from Member m";
+*/
+/*
+            String query = "select coalesce(m.username, '이름 없는 회원') from Member m";
+
+            //String query = "select NULLIF(m.username, '관리자') from Member m";
+
+            List<String> resultList = entityManager.createQuery(query, String.class).getResultList();
+            for (String s : resultList) {
+                System.out.println("s = " + s);
+            }
+*/
+
+            Member member1 = new Member();
+            Member member2 = new Member();
+
+            member1.setUsername("관리자1");
+            member2.setUsername("관리자2");
+            entityManager.persist(member1);
+            entityManager.persist(member2);
+
+            entityManager.flush();
+            entityManager.clear();
+
+            // 문자 합치기 1
+            //String query = "select 'a' || 'b' from Member m";
+            // 문자 합치기 2
+            //String query = "select concat('a', 'b') from Member m";
+            // 문자 자르기
+            //String query = "select subString(m.username, 2, 3) from Member m";
+            // 4를 돌려준다 (아래의 부분을 (List 부분) Integer type으로 변경해줘야함)
+            //String query = "select locate('de', 'abcdefg') from Member m";
+            // 컬렉션의 크기 (아래의 부분을 (List 부분) Integer type으로 변경해줘야함)
+            //String query = "select size(t.members) from Team t";
+
+            // 사용자 정의 함수
+            //String query = "select function('group_concat', m.username) from Member m";
+            String query = "select group_concat(m.username) from Member m";
+
+
+            List<String> resultList = entityManager.createQuery(query, String.class).getResultList();
+            for (String s : resultList) {
+                System.out.println("s = " + s);
             }
 
             entityTransaction.commit();
