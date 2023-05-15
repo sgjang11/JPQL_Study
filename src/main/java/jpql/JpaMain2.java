@@ -44,7 +44,7 @@ public class JpaMain2 {
             List<Integer> resultList = entityManager.createQuery(query, Integer.class).getResultList();
             System.out.println("resultList = " + resultList);
 */
-
+/*
             // 패치 조인
             Member member1 = new Member();
             Member member2 = new Member();
@@ -101,6 +101,45 @@ public class JpaMain2 {
             for (Member member : memberList) {
                 System.out.println("member = " + member);
             }
+*/
+            // Named 쿼리
+            Member member1 = new Member();
+            Member member2 = new Member();
+            Member member3 = new Member();
+            Team teamA = new Team();
+            Team teamB = new Team();
+            teamA.setName("teamA");
+            teamB.setName("teamB");
+
+            member1.setUsername("회원1");
+            member1.setTeam(teamA);
+            member2.setUsername("회원2");
+            member2.setTeam(teamA);
+            member3.setUsername("회원3");
+            member3.setTeam(teamB);
+
+            entityManager.persist(teamA);
+            entityManager.persist(teamB);
+            entityManager.persist(member1);
+            entityManager.persist(member2);
+            entityManager.persist(member3);
+
+            entityManager.flush();
+            entityManager.clear();
+
+//            List<Member> memberList = entityManager.createNamedQuery("Member.findByUsername", Member.class)
+//                    .setParameter("username", "회원1")
+//                    .getResultList();
+//            for (Member member : memberList) {
+//                System.out.println("member = " + member);
+//            }
+            // flush는 자동 호출됨.
+            int resultCount = entityManager.createQuery("update Member m set m.age = 20").executeUpdate();
+            System.out.println("resultCount = " + resultCount);
+            System.out.println("member1.getAge() = " + member1.getAge());
+            System.out.println("member2.getAge() = " + member2.getAge());
+            System.out.println("member3.getAge() = " + member3.getAge());
+
 
             entityTransaction.commit();
         } catch (Exception e) {
