@@ -78,11 +78,30 @@ public class JpaMain2 {
 //                System.out.println("member = " + member.getUsername() + ", " + member.getTeam().getName());
 //            }
 
-            String query = "Select distinct t from Team t join fetch t.members";
-            List<Team> memberList = entityManager.createQuery(query, Team.class).getResultList();
-            for (Team team : memberList) {
-                System.out.println("team = " + team.getName() + " | members = " + team.getMembers().size());
+//            String query = "Select distinct t from Team t join fetch t.members";
+//            List<Team> memberList = entityManager.createQuery(query, Team.class).getResultList();
+//            for (Team team : memberList) {
+//                System.out.println("team = " + team.getName() + " | members = " + team.getMembers().size());
+//            }
+
+            // 엔티티 직접 사용
+            //String queryEntity = "Select m from Member m where m = :member";
+            String queryId = "Select m from Member m where m.id = :memberId";
+            Member findMember = entityManager.createQuery(queryId, Member.class)
+                    //.setParameter("member", member1)
+                    .setParameter("memberId", member1.getId())
+                    .getSingleResult();
+            System.out.println("findMember = " + findMember);
+
+            // 외래 키
+            String queryFor = "Select m from Member m where m.team = :team";
+            List<Member> memberList = entityManager.createQuery(queryFor, Member.class)
+                    .setParameter("team", teamA)
+                    .getResultList();
+            for (Member member : memberList) {
+                System.out.println("member = " + member);
             }
+
             entityTransaction.commit();
         } catch (Exception e) {
             entityTransaction.rollback();
